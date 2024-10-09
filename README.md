@@ -16,8 +16,9 @@ This project is a simple RESTful API for managing a bill payments system. It inc
 
 1. **Users**: Manage users with full CRUD operations.
 2. **Transactions**: Manage transactions with full CRUD operations.
-3. **API Resources**: Responses are formatted using Laravel's Eloquent API Resources.
-4. **Unit Tests**: Each API endpoint is covered with unit tests.
+3. **Authentication**: Secure endpoints using sanctum.
+4. **API Resources**: Responses are formatted using Laravel's Eloquent API Resources.
+5. **Unit Tests**: Each API endpoint is covered with unit tests.
 
 ## Setup Instructions
 
@@ -32,8 +33,8 @@ This project is a simple RESTful API for managing a bill payments system. It inc
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/laravel-backend-developer-test.git
-   cd laravel-backend-developer-test
+   git clone https://github.com/VivianDee/EasyBill.git
+   cd EasyBill
    ```
 
 2. Install dependencies:
@@ -51,9 +52,9 @@ This project is a simple RESTful API for managing a bill payments system. It inc
      DB_CONNECTION=mysql
      DB_HOST=127.0.0.1
      DB_PORT=3306
-     DB_DATABASE=your_database
-     DB_USERNAME=your_username
-     DB_PASSWORD=your_password
+     DB_DATABASE=bill_payment
+     DB_USERNAME=root
+     DB_PASSWORD=
      ```
 
 4. Generate the application key:
@@ -70,7 +71,7 @@ This project is a simple RESTful API for managing a bill payments system. It inc
 
 To start the development server, run:
 ```bash
-php artisan serve
+php artisan serve --port=8000
 ```
 This will start the application at `http://localhost:8000`.
 
@@ -94,11 +95,15 @@ Here are the available API endpoints for managing users and transactions:
 
 ### API Documentation
 
-A Postman collection for the API can be accessed at this link: [Postman Collection](#) (Replace `#` with your Postman collection link)
+A Postman collection for the API can be accessed on request
 
 ### Running Tests
 
-This project includes unit tests for all API endpoints. To run the tests, execute:
+Run the tests using the following command:
 ```bash
 php artisan test
 ```
+
+### Conclusion
+
+This project demonstrates the ability to create a secure and functional API using Laravel. The structure is modular, making it easy to extend functionality in the future.
