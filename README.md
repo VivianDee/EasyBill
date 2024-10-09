@@ -4,13 +4,11 @@
 
 This project is a simple RESTful API for managing a bill payments system. It includes CRUD operations for `users` and `transactions`, MySQL database setup, API responses using Eloquent Resources, and unit testing.
 
-## Requirements
+## Technologies Used
 
-- **Framework**: Laravel
-- **Database**: MySQL with relationships between `users` and `transactions` tables
-- **API**: CRUD implementation for both `users` and `transactions`
-- **Responses**: API responses using Laravel’s Eloquent API Resources
-- **Testing**: Unit tests for API endpoints using Laravel's built-in testing tools
+- **Backend**: PHP Laravel
+- **Database**: MySQL
+- **Version Control**: Git, GitHub
 
 ## Features
 
