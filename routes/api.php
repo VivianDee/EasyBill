@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -47,39 +48,19 @@ Route::middleware(['VerifyApiKey'])->group(function () {
     ])->group(function () {
 
         Route::prefix('user')->group(function () {
-            Route::get('/', [UserController::class, 'showUser']);
-            Route::get('/{id}', [UserController::class, 'showUser']);
+            Route::get('/', [UserController::class, 'getAllUsers']);
+            Route::get('/{id}', [UserController::class, 'getUser']);
+            Route::put('/', [UserController::class, 'updateUser']);
+            Route::delete('/', [UserController::class, 'deleteUser']);
         });
 
-        
-        Route::prefix('tasks')->group(function () {
-            Route::get('/', [TaskController::class, 'showUserTasks']);
-            Route::get('/{task_id}', [TaskController::class, 'showUserTasks']); 
-            Route::post('/', [TaskController::class, 'createTask']);
-            Route::put('/', [TaskController::class, 'updateTask']);
-            Route::put('/status', [TaskController::class, 'toggleTaskStatus']);
-            Route::delete('/{task_id}', [TaskController::class, 'deleteTask']);
-
+        Route::prefix('transactions')->group(function () {
+            Route::post('/', [TransactionController::class, 'createTransaction']);
+            Route::get('/', [TransactionController::class, 'getAllTransactions']);
+            Route::get('/{id}', [TransactionController::class, 'getTransaction']);
+            Route::put('/', [TransactionController::class, 'updateTransaction']);
+            Route::delete('/', [TransactionController::class, 'deleteTransaction']);
         });
 
-
-        Route::prefix('projects')->group(function () {
-            Route::get('/', [ProjectController::class, 'showUserProjects']);
-            Route::get('/{project_id}', [ProjectController::class, 'showUserProjects']); 
-            Route::post('/', [ProjectController::class, 'createProject']);
-            Route::put('/', [ProjectController::class, 'updateProject']);
-            Route::delete('/{project_id}', [ProjectController::class, 'deleteProject']);
-
-        });
-
-        Route::prefix('teams')->group(function () {
-            Route::get('/', [TeamController::class, 'showUsersTeams']);
-            Route::get('/{team_id}', [TeamController::class, 'showUsersTeams']); 
-            Route::post('/', [TeamController::class, 'createTeam']);
-            Route::put('/', [TeamController::class, 'updateTeam']);
-            Route::delete('/{team_id}', [TeamController::class, 'deleteTeam']);
-
-            Route::post('/assign', [TeamController::class, 'assignUserToTeam']);
-        });
     });
 });
