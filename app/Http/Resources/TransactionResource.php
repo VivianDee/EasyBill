@@ -14,6 +14,16 @@ class TransactionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'user_id',
+            'bill_type',
+            'amount_due',
+            'amount_paid',
+            'description',
+            'payment_method',
+            'transaction_reference',
+            'status',
+            'due_date',
+        ];
     }
 }

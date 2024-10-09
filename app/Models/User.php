@@ -41,7 +41,6 @@ class User extends Authenticatable
         'created_at',
         'updated_at',
         'deleted_at',
-        'pivot',
     ];
 
     /**
@@ -55,5 +54,35 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // Relationship to transactions
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    // Method to get total amount due across all transactions
+    public function getTotalAmountDueAttribute()
+    {
+        return $this->transactions()->where('status', 'pending')->sum('amount_due');
+    }
+
+    // Method to get total amount paid across all transactions
+    public function getTotalAmountPaidAttribute()
+    {
+        return $this->transactions()->sum('amount_paid');
+    }
+
+    // Method to get the count of pending transactions
+    public function getPendingTransactionsCountAttribute()
+    {
+        return $this->transactions()->where('status', 'pending')->count();
+    }
+
+    // Optional: Method to check if user has pending transactions
+    public function hasPendingTransactions()
+    {
+        return $this->transactions()->where('status', 'pending')->exists();
     }
 }

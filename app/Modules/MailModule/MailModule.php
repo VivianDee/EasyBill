@@ -13,14 +13,14 @@ class MailModule
     {
 
         $mail = new OtpMail([
-            "title" => "Account Recovery - TaskMaster",
+            "title" => "Account Recovery - Bill Payment System",
             "greeting" => "Hello",
             "name" => $request->first_name,
-            "intro" => "We received a request to recover your account.",
-            "text" => "Your One-Time Password (OTP) is: " . $request->otp . "     .\n" .
-                      "This OTP will expire in " . $request->otp_expiry . " minuites .",
-            "outro" => "If you did not request this, please ignore this email.",
-            "companyName" => "TaskMaster",
+            "intro" => "We received a request to recover your account associated with our Bill Payment System.",
+            "text" => "Your One-Time Password (OTP) is: " . $request->otp . ".\n" .
+                      "This OTP will expire in " . $request->otp_expiry . " minutes.",
+            "outro" => "If you did not request this, please disregard this email.",
+            "companyName" => "Bill Payment System",
         ]);
 
         $status = Mail::mailer("task_smtp")
@@ -33,15 +33,13 @@ class MailModule
     public static function sendWelcomeMail(Request $request): bool
     {
         $mail = new WelcomeMail([
-            "title" => "Welcome to Your Task Management System",
-            "greeting" => "Welcome to TaskMaster!",
+            "title" => "Welcome to the Bill Payment System",
+            "greeting" => "Welcome to the Bill Payment System!",
             "name" => $request->first_name,
-            "intro" =>
-                "We're excited to have you on board! Get ready to streamline your tasks and boost your productivity with our powerful tools.",
-            "text" =>
-                "With TaskMaster, you can easily create, assign, and manage tasks, set deadlines, and collaborate with your team effortlessly. We're here to help you stay organized and achieve your goals.",
-            "outro" => "Let's get started on your journey to better task management!",
-            "companyName" => "TaskMaster",
+            "intro" => "We're thrilled to have you join us! Prepare to manage your bills efficiently and conveniently.",
+            "text" => "With our Bill Payment System, you can easily view, manage, and pay your bills online, set reminders, and enjoy a seamless payment experience. Our goal is to simplify your financial management and help you stay on top of your payments.",
+            "outro" => "Let's get started on your journey towards hassle-free bill payments!",
+            "companyName" => "Bill Payment System",
         ]);
 
         $status = Mail::mailer("task_smtp")

@@ -13,16 +13,6 @@ class UserUpdateService
     public function updateUser(Request $request)
     {
         try {
-            $user_id = $request->route('id');
-
-            $user = User::findOrFail($user_id);
-
-
-            if (!$user) {
-                return ResponseHelper::notFound(
-                    message: "User not found"
-                );
-            }
 
             $validator = Validator::make($request->all(), [
                 "first_name" => "required|string|max:255",
@@ -35,6 +25,17 @@ class UserUpdateService
                 return ResponseHelper::error(
                     message: "Validation failed",
                     error: $validator->errors()->toArray()
+                );
+            }
+
+            $user_id = $request->route('id');
+
+            $user = User::findOrFail($user_id);
+
+
+            if (!$user) {
+                return ResponseHelper::notFound(
+                    message: "User not found"
                 );
             }
 

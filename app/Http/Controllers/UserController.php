@@ -15,9 +15,27 @@ class UserController extends Controller
         $this->userModule = $userModule;
     }
 
-    // Get Authenticated User Details
-    public function showUser(Request $request)
+    // Get a single user by ID
+    public function getUser(Request $request)
     {
-        return $this->userModule->showUser($request);
+        return $this->userModule->getUser($request);
+    }
+
+    // Get all users
+    public function getAllUsers(Request $request)
+    {
+        return $this->userModule->getAllUsers($request);
+    }
+
+    // Update a user
+    public function updateUser(Request $request)
+    {
+        return $this->userModule->updateUser($request);
+    }
+
+    // Delete a user
+    public function deleteUser(Request $request)
+    {
+        return $this->userModule->deleteUser($request);
     }
 }
