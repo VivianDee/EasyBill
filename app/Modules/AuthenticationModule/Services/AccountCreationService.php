@@ -5,12 +5,10 @@ namespace App\Modules\AuthenticationModule\Services;
 use App\Enums\AccountType;
 use App\Helpers\ResponseHelper;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Modules\MailModule\MailModule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 class AccountCreationService
 {

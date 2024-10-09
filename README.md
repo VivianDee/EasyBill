@@ -35,18 +35,18 @@ This project is a simple RESTful API for managing a bill payments system. It inc
    cd EasyBill
    ```
 
-2. Install dependencies:
-   ```bash
-   composer install
-   ```
-
-3. Set up the environment variables:
-   - Copy `.env.example` to `.env`:
+2. **Install dependencies**:
+   - **Laravel**:
      ```bash
-     cp .env.example .env
+     composer install
      ```
-   - Configure your `.env` file with database credentials:
-     ```
+
+3. **Set up database**:
+   - **MySQL**: Create a MySQL database and update the `.env` file accordingly.
+
+4. **Configure environment variables**:
+    - **Laravel**, update `.env` with your MySQL credentials:
+     ```env
      DB_CONNECTION=mysql
      DB_HOST=127.0.0.1
      DB_PORT=3306
@@ -55,15 +55,22 @@ This project is a simple RESTful API for managing a bill payments system. It inc
      DB_PASSWORD=
      ```
 
-4. Generate the application key:
+5. Generate the application key:
    ```bash
    php artisan key:generate
    ```
 
-5. Run database migrations and seed the database:
-   ```bash
-   php artisan migrate --seed
-   ```
+6. **Run migrations**:
+   - For **Laravel**:
+     ```bash
+     php artisan migrate
+     ```
+
+7. **Run the backend server**:
+- For **Laravel**:
+     ```bash
+     php artisan serve
+     ```
 
 ### Running the Application
 
@@ -76,6 +83,11 @@ This will start the application at `http://localhost:8000`.
 ### API Endpoints
 
 Here are the available API endpoints for managing users and transactions:
+
+- **Authentication**
+  - `POST /api/auth/register`: Register a new user.
+  - `POST /api/auth/login`: Log in a user.
+  - `POST /api/auth/logout`: Log out a user.
 
 - **Users**
   - `GET /api/users`: Get all users
