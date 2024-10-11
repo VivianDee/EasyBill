@@ -91,7 +91,7 @@ Here are the available API endpoints for managing users and transactions:
   - `POST /api/auth/register`: Register a new user.
   - `POST /api/auth/login`: Log in a user.
   - `POST /api/auth/logout`: Log out a user.
-  - `POST /api/auth/auth/change-password`: Change user password.
+  - `POST /api/auth/change-password`: Change user password.
 
 - **Users**
   - `GET /api/users`: Get all users
