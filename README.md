@@ -60,20 +60,17 @@ This project is a simple RESTful API for managing a bill payments system. It inc
    php artisan key:generate
    ```
 
-6. **Run migrations**:
-   - For **Laravel**:
+6. Run migrations:
      ```bash
      php artisan migrate
      ```
 
-7. **Run the backend server**:
-- For **Laravel**:
+7. Run the backend server:
      ```bash
      php artisan serve
      ```
 
-8. **Create API routes file and install Laravel Sanctum**:
-- For **Laravel**:
+8. Create API routes file and install Laravel Sanctum:
      ```bash
      php artisan install:api
      ```
@@ -94,24 +91,25 @@ Here are the available API endpoints for managing users and transactions:
   - `POST /api/auth/register`: Register a new user.
   - `POST /api/auth/login`: Log in a user.
   - `POST /api/auth/logout`: Log out a user.
+  - `POST /api/auth/auth/change-password`: Change user password.
 
 - **Users**
   - `GET /api/users`: Get all users
-  - `POST /api/users`: Create a new user
-  - `GET /api/users/{id}`: Get a single user
-  - `PUT /api/users/{id}`: Update a user
-  - `DELETE /api/users/{id}`: Delete a user
+  - `GET /api/user/{id}`: Get user by ID 
+  - `GET /api/user`: Get authenticated user
+  - `PUT /api/user`: Update authenticated user
+  - `DELETE /api/user`: Delete authenticated user
 
 - **Transactions**
   - `GET /api/transactions`: Get all transactions
-  - `POST /api/transactions`: Create a new transaction
-  - `GET /api/transactions/{id}`: Get a single transaction
-  - `PUT /api/transactions/{id}`: Update a transaction
-  - `DELETE /api/transactions/{id}`: Delete a transaction
+  - `POST /api/transaction`: Create a new transaction
+  - `GET /api/transaction/{id}`: Get a single transaction
+  - `PUT /api/transaction/{id}`: Update a transaction
+  - `DELETE /api/transaction/{id}`: Delete a transaction
 
 ### API Documentation
 
-A Postman collection for the API can be accessed on request
+A Postman collection for the API can be accessed [here](https://www.postman.com/bakkaztech/workspace/my-personal-workspace/collection/34974013-afcbc756-1431-45d5-9726-c7237e0acef5?action=share&creator=34974013).
 
 ### Running Tests
 
@@ -119,7 +117,30 @@ Run the tests using the following command:
 ```bash
 php artisan test
 ```
+### Modular Service-Based Architecture
+
+In this application, each feature (like `Users` and `Transactions`) is organized into core components that work together efficiently:
+
+- **Controllers**: These receive incoming API requests, delegate tasks to the appropriate Modules, and return the results as API responses.
+
+- **Modules**: Each Module encapsulates the functionality related to a feature, making it easier to manage and scale. For example, the `UserModule` contains everything related to user management, excluding authentication.
+
+- **Services**: The Services perform the actual work. `Controllers` call the `Modules` which calls the `Services` to handle the tasks, manipulate data or performing specific actions.
+
+- **Resources**: They interact with the database using Eloquent models to ensure that the data returned is structured correctly and includes only the necessary information.
+
+- **Helpers**: Helper functions or methods assist with common tasks e.g `ResponseHelper` which is used to standardize API responses across the application.
+
+- **Enums**: Enums provide a clear way to handle predefined values. For example, the `AccountType` enum defines the different types of user accounts.
+
+- **Middleware**: Middleware acts as a filter for incoming requests. The `VerifyApiKey` middleware checks for a valid API key in the request headers. It acts as an extra layer of security.
+
+- **Models**: Models represent the structure of the database tables using Eloquent ORM.
+
+This structured approach helps maintain a clean separation of concerns, making it easier to update features and scale the application as needed.
+
+
 
 ### Conclusion
 
-This project demonstrates the ability to create a secure and functional API using Laravel. The structure is modular, making it easy to extend functionality in the future.
+This project demonstrates my ability to create a secure and functional API using Laravel. The structure is modular, making it easy to extend functionality in the future.
