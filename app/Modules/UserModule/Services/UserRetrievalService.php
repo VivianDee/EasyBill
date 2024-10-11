@@ -14,7 +14,7 @@ class UserRetrievalService
         try {
             $user_id = $request->route('id');
 
-            $user = User::findOrFail($user_id);
+            $user = $user_id ? User::find($user_id) : $request->user();
 
 
             if (!$user) {

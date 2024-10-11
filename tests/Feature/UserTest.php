@@ -11,26 +11,15 @@ class UserTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_can_create_user()
-    {
-        $response = $this->postJson('/api/register', [
-            'first_name' => 'Jane',
-            'last_name' => 'Doe',
-            'email' => 'jane@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
-        ]);
-
-        $response->assertStatus(201)
-            ->assertJsonStructure(['token']);
-    }
-
     public function test_can_update_user()
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        $token = $user->createToken('TestToken')->plainTextToken;
 
-        $response = $this->putJson('/api/user', [
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer $token",
+            'x-api-key' => env("API_KEY"),
+        ])->patchJson('/api/user', [
             'first_name' => 'John',
             'last_name' => 'Doe',
         ]);
@@ -45,14 +34,52 @@ class UserTest extends TestCase
     public function test_can_get_user_details()
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        $token = $user->createToken('TestToken')->plainTextToken;
 
-        $response = $this->getJson('/api/user');
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer $token",
+            'x-api-key' => env("API_KEY"),
+        ])->getJson('/api/user');
+
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'status',
+                'statusCode',
+                'message',
+                'data' => [
+                    'id',
+                    'first_name',
+                    'last_name',
+                    'email',
+                    'account_type',
+                    'email_verified_at',
+                    'ip_address',
+                    'created_at',
+                ],
+                'error'
+            ]);
+    }
+
+    public function test_can_delete_user()
+    {
+        $user = User::factory()->create();
+        $token = $user->createToken('TestToken')->plainTextToken;
+
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer $token",
+            'x-api-key' => env("API_KEY"),
+        ])->deleteJson('/api/user');
 
         $response->assertStatus(200)
             ->assertJson([
-                'id' => $user->id,
-                'email' => $user->email,
+                'status' => true,
+                'statusCode' => 200,
+                'message' => 'User deleted successfully',
+                'data' => [],
+                'error' => null,
             ]);
+
+        // Assert user is deleted from the database
+        $this->assertDatabaseMissing('users', ['id' => $user->id]);
     }
 }

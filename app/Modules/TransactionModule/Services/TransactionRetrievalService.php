@@ -14,7 +14,7 @@ class TransactionRetrievalService
         try {
             $transaction_id = $request->route('id');
 
-            $transaction = Transaction::findOrFail($transaction_id);
+            $transaction = Transaction::find($transaction_id);
 
 
             if (!$transaction) {

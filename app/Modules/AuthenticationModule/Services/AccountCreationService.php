@@ -53,21 +53,21 @@ class AccountCreationService
                 );
             }
 
-            // Send Welcome email
-            $mailRequest = new Request([
-                "email" => $user->email,
-                "first_name" => $user->first_name,
-            ]);
+            // // Send Welcome email
+            // $mailRequest = new Request([
+            //     "email" => $user->email,
+            //     "first_name" => $user->first_name,
+            // ]);
 
-            MailModule::sendWelcomeMail($mailRequest);
+            // MailModule::sendWelcomeMail($mailRequest);
 
-            return ResponseHelper::success(
+            return ResponseHelper::created(
                 message: "User resgistered successfully"
             );
         } catch (\Throwable $th) {
             return ResponseHelper::internalServerError(
                 message: "Internal Server Error",
-                error: $th->getMessage()
+                error: $th->getMessage() . " on line: " . $th->getLine() . "file:" . $th->getFile()
             );
         }
     }

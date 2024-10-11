@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Http\Resources\UserResource;
 use Illuminate\Http\JsonResponse;
 
 class ResponseHelper
@@ -11,7 +12,7 @@ class ResponseHelper
      *
      * @param bool $status
      * @param string $message
-     * @param array $data
+     * @param mixed $data
      * @param int $statusCode
      * @param mixed|null $error
      * @return JsonResponse
@@ -19,7 +20,7 @@ class ResponseHelper
     private static function buildResponse(
         bool $status,
         string $message,
-        array $data,
+        mixed $data,
         int $statusCode,
         mixed $error = null
     ): JsonResponse {
@@ -86,7 +87,7 @@ class ResponseHelper
      * @return JsonResponse
      */
     public static function created(
-        array $data = [],
+        mixed $data = [],
         string $message = "Resource created successfully",
         mixed $error = null
     ): JsonResponse {

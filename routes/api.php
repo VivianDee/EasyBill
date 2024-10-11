@@ -48,19 +48,28 @@ Route::middleware(['VerifyApiKey'])->group(function () {
     ])->group(function () {
 
         Route::prefix('user')->group(function () {
-            Route::get('/', [UserController::class, 'getAllUsers']);
-            Route::get('/{id}', [UserController::class, 'getUser']);
-            Route::put('/', [UserController::class, 'updateUser']);
+            // Authenticated user routes
+            Route::get('/', [UserController::class, 'getUser']);
+            Route::patch('/', [UserController::class, 'updateUser']);
             Route::delete('/', [UserController::class, 'deleteUser']);
+
+
+            // Get any user by id
+            Route::get('/{id}', [UserController::class, 'getUser']);
         });
 
-        Route::prefix('transactions')->group(function () {
+        //get all users
+        Route::get('/users', [UserController::class, 'getAllUsers']);
+
+        Route::prefix('transaction')->group(function () {
             Route::post('/', [TransactionController::class, 'createTransaction']);
-            Route::get('/', [TransactionController::class, 'getAllTransactions']);
             Route::get('/{id}', [TransactionController::class, 'getTransaction']);
-            Route::put('/', [TransactionController::class, 'updateTransaction']);
-            Route::delete('/', [TransactionController::class, 'deleteTransaction']);
+            Route::patch('/{id}', [TransactionController::class, 'updateTransaction']);
+            Route::delete('/{id}', [TransactionController::class, 'deleteTransaction']);
         });
+
+        //Get all transactions
+        Route::get('/transactions', [TransactionController::class, 'getAllTransactions']);
 
     });
 });

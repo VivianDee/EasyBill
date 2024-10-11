@@ -42,7 +42,7 @@ This project is a simple RESTful API for managing a bill payments system. It inc
      ```
 
 3. **Set up database**:
-   - **MySQL**: Create a MySQL database and update the `.env` file accordingly.
+   - **MySQL**: Create the `bill_payment` MySQL database and update the `.env` file accordingly.
 
 4. **Configure environment variables**:
     - **Laravel**, update `.env` with your MySQL credentials:
@@ -70,6 +70,12 @@ This project is a simple RESTful API for managing a bill payments system. It inc
 - For **Laravel**:
      ```bash
      php artisan serve
+     ```
+
+8. **Create API routes file and install Laravel Sanctum**:
+- For **Laravel**:
+     ```bash
+     php artisan install:api
      ```
 
 ### Running the Application

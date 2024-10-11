@@ -16,7 +16,6 @@ class TransactionCreationService
 
         try {
             $validator = Validator::make($request->all(), [
-                'user_id' => 'required|exists:users,id',
                 'bill_type' => 'required|string|max:255',
                 'amount_due' => 'required|numeric',
                 'amount_paid' => 'nullable|numeric',
@@ -35,9 +34,7 @@ class TransactionCreationService
                 );
             }
 
-            $user_id = $request->input('user_id');
-
-            $user = User::findOrFail($user_id);
+            $user = $request->user();
 
 
             if (!$user) {
@@ -47,8 +44,7 @@ class TransactionCreationService
             }
 
             // Create the transaction
-            $transaction = Transaction::create($request->only([
-                'user_id',
+            $transaction = $user->transactions()->create($request->only([
                 'bill_type',
                 'amount_due',
                 'amount_paid',
@@ -65,7 +61,7 @@ class TransactionCreationService
                 );
             }
 
-            return ResponseHelper::success(
+            return ResponseHelper::created(
                 message: "Transaction created successfully",
                 data: new TransactionResource($transaction)
             );

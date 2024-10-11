@@ -15,10 +15,12 @@ class TransactionTest extends TestCase
     public function test_can_create_transaction()
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        $token = $user->createToken('TestToken')->plainTextToken;
 
-        $response = $this->postJson('/api/transactions', [
-            'user_id' => $user->id,
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer $token",
+            'x-api-key' => env("API_KEY"),
+        ])->postJson('/api/transaction', [
             'bill_type' => 'Electricity',
             'amount_due' => 100.50,
             'amount_paid' => 50.00,
@@ -30,7 +32,25 @@ class TransactionTest extends TestCase
         ]);
 
         $response->assertStatus(201)
-            ->assertJsonStructure(['message', 'transaction']);
+            ->assertJsonStructure([
+                'status',
+                'statusCode',
+                'message',
+                'data' => [
+                    'id',
+                    'user_id',
+                    'bill_type',
+                    'amount_due',
+                    'amount_paid',
+                    'description',
+                    'payment_method',
+                    'transaction_reference',
+                    'status',
+                    'due_date',
+                    'created_at',
+                ],
+                'error'
+            ]);
     }
 
     public function test_can_get_transaction()
@@ -39,12 +59,33 @@ class TransactionTest extends TestCase
         $transaction = Transaction::factory()->create([
             'user_id' => $user->id,
         ]);
-        Sanctum::actingAs($user);
+        $token = $user->createToken('TestToken')->plainTextToken;
 
-        $response = $this->getJson("/api/transactions/{$transaction->id}");
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer $token",
+            'x-api-key' => env("API_KEY"),
+        ])->getJson("/api/transaction/{$transaction->id}");
 
         $response->assertStatus(200)
-            ->assertJsonStructure(['id', 'user_id', 'amount_due']);
+            ->assertJsonStructure([
+                'status',
+                'statusCode',
+                'message',
+                'data' => [
+                    'id',
+                    'user_id',
+                    'bill_type',
+                    'amount_due',
+                    'amount_paid',
+                    'description',
+                    'payment_method',
+                    'transaction_reference',
+                    'status',
+                    'due_date',
+                    'created_at',
+                ],
+                'error'
+            ]);
     }
 
     public function test_can_update_transaction()
@@ -53,9 +94,12 @@ class TransactionTest extends TestCase
         $transaction = Transaction::factory()->create([
             'user_id' => $user->id,
         ]);
-        Sanctum::actingAs($user);
+        $token = $user->createToken('TestToken')->plainTextToken;
 
-        $response = $this->putJson("/api/transactions/{$transaction->id}", [
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer $token",
+            'x-api-key' => env("API_KEY"),
+        ])->patchJson("/api/transaction/{$transaction->id}", [
             'amount_paid' => 75.00,
             'status' => 'completed',
         ]);
@@ -65,5 +109,30 @@ class TransactionTest extends TestCase
                 'amount_paid' => 75.00,
                 'status' => 'completed',
             ]);
+    }
+
+    public function test_can_delete_transaction()
+    {
+        $user = User::factory()->create();
+        $transaction = Transaction::factory()->create([
+            'user_id' => $user->id,
+        ]);
+        $token = $user->createToken('TestToken')->plainTextToken;
+
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer $token",
+            'x-api-key' => env("API_KEY"),
+        ])->deleteJson("/api/transaction/{$transaction->id}");
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'status' => true,
+                'statusCode' => 200,
+                'message' => 'Transaction deleted successfully',
+                'data' => [],
+                'error' => null,
+            ]);
+
+        $this->assertDatabaseMissing('transactions', ['id' => $transaction->id]);
     }
 }

@@ -10,9 +10,7 @@ class UserDeletionService
 {
     public function deleteUser(Request $request)
     {
-        $user_id = $request->route('id');
-
-        $user = User::findOrFail($user_id);
+        $user = $request->user();
 
 
         if (!$user) {

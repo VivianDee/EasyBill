@@ -21,7 +21,7 @@ class TransactionFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(), // Creates a new user associated with this transaction
+            'user_id' => User::factory(), 
             'bill_type' => $this->faker->randomElement(['Electricity', 'Water', 'Internet']),
             'amount_due' => $this->faker->randomFloat(2, 50, 500),
             'amount_paid' => $this->faker->randomFloat(2, 10, 500),

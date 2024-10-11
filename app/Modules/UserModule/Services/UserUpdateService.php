@@ -15,9 +15,9 @@ class UserUpdateService
         try {
 
             $validator = Validator::make($request->all(), [
-                "first_name" => "required|string|max:255",
-                "last_name" => "required|string|max:255",
-                'email' => 'required|email:rfc,dns|max:255|unique:users,email',
+                "first_name" => "nullable|string|max:255",
+                "last_name" => "nullable|string|max:255",
+                'email' => 'nullable|email:rfc,dns|max:255|unique:users,email',
             ]);
 
             // If validation fails, return an error response
@@ -28,9 +28,7 @@ class UserUpdateService
                 );
             }
 
-            $user_id = $request->route('id');
-
-            $user = User::findOrFail($user_id);
+            $user = $request->user();
 
 
             if (!$user) {
@@ -39,7 +37,7 @@ class UserUpdateService
                 );
             }
 
-            $user->update(array_filter($request->only(['first_name', 'last_name', 'email'])));
+            $user->update($request->only(['first_name', 'last_name', 'email']));
 
 
             return ResponseHelper::success(

@@ -13,9 +13,14 @@ class TransactionUpdateService
     public function updateTransaction(Request $request)
     {
         try {
+            $transaction = Transaction::find($request->route('id'));
+
+            if (!$transaction) {
+                return ResponseHelper::notFound(message: "Transaction not found");
+            }
+
             // Validate the incoming request data
             $validator = Validator::make($request->all(), [
-                'transaction_id' => 'required|exists:transactions,id',
                 'bill_type' => 'sometimes|required|string|max:255',
                 'amount_due' => 'sometimes|required|numeric',
                 'amount_paid' => 'nullable|numeric',
@@ -34,12 +39,6 @@ class TransactionUpdateService
                 );
             }
 
-            $transaction = Transaction::find($request->transaction_id);
-
-            if (!$transaction) {
-                return ResponseHelper::notFound(message: "Transaction not found");
-            }
-
             // Update the transaction
             $transaction->update($request->only([
                 'bill_type',
@@ -53,7 +52,8 @@ class TransactionUpdateService
             ]));
 
             return ResponseHelper::success(
-                message: "Transaction updated successfully"
+                message: "Transaction updated successfully",
+                data: new TransactionResource($transaction)
             );
         } catch (\Throwable $th) {
             return ResponseHelper::internalServerError(

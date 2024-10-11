@@ -21,6 +21,12 @@ class Transaction extends Model
         'due_date',
     ];
 
+    protected $casts = [
+        'amount_due' => 'decimal:2',
+        'amount_paid' => 'decimal:2',
+        'due_date' => 'date',
+    ];
+
     // Relationship to the user
     public function user()
     {
